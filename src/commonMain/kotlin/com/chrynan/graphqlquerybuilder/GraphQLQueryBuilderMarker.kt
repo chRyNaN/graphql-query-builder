@@ -1,0 +1,4 @@
+package com.chrynan.graphqlquerybuilder
+
+@DslMarker
+annotation class GraphQLQueryBuilderMarker

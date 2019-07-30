@@ -1,0 +1,3 @@
+rootProject.name = 'graphql-query-builder'
+
+enableFeaturePreview('GRADLE_METADATA')
