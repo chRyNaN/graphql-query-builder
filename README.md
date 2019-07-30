@@ -1,5 +1,5 @@
 # graphql-query-builder
-A Mutliplatform Kotlin Library to facilitate the creation of type-safe GraphQL Query DSLs
+A Mutliplatform Kotlin Library to facilitate the creation of type-safe GraphQL Query DSLs.
 
 The following GraphQL Schema:
 ```graphql
@@ -47,9 +47,9 @@ class Root : RootGraphQLQueryBuilder() {
 }
 ```
 
-Which allows you to create dynamic and type-safe queries like this:
+Which allows you to create dynamic and type-safe queries in Kotlin like this:
 ```kotlin
-query(Root()){
+val graphQLQuery = query(Root()){
   viewer {
     id
     name
