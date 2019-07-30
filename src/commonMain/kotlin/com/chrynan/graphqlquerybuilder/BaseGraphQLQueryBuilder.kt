@@ -4,11 +4,25 @@ import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 @GraphQLQueryBuilderMarker
-open class GraphQLQueryBuilder {
+sealed class BaseGraphQLQueryBuilder(
+    val queryType: GraphQLQueryType
+) : GraphQLRootInfoProvider {
+
+    override val isRoot: Boolean
+        get() = false
+
+    val isQuery
+        get() = queryType == GraphQLQueryType.QUERY
+
+    val isMutation
+        get() = queryType == GraphQLQueryType.MUTATION
+
+    val isSubscription
+        get() = queryType == GraphQLQueryType.SUBSCRIPTION
+
+    val fieldNames = mutableSetOf<String>()
 
     private val sb = StringBuilder()
-
-    private val fieldNames = mutableSetOf<String>()
 
     fun param(name: String, defaultValue: Any? = null, value: Any? = null) =
         GraphQLParameter(
@@ -23,7 +37,7 @@ open class GraphQLQueryBuilder {
         sb.append(fieldBuilder.build())
     }
 
-    fun <B : GraphQLQueryBuilder> obj(
+    fun <B : BaseGraphQLQueryBuilder> obj(
         name: String,
         parameters: List<GraphQLParameter> = emptyList(),
         objectBuilder: B,
@@ -42,12 +56,21 @@ open class GraphQLQueryBuilder {
     internal fun build() = sb.toString()
 
     @Suppress("ClassName")
-    inner class scalar(val name: String) : ReadOnlyProperty<GraphQLQueryBuilder, Unit> {
+    inner class scalar(val name: String) : ReadOnlyProperty<BaseGraphQLQueryBuilder, Unit> {
 
-        override fun getValue(thisRef: GraphQLQueryBuilder, property: KProperty<*>) {
+        override fun getValue(thisRef: BaseGraphQLQueryBuilder, property: KProperty<*>) {
             val fieldBuilder = ScalarGraphQLQueryFieldBuilder(name = name)
             fieldNames.add(name)
             sb.append(fieldBuilder.build())
         }
     }
 }
+
+open class GraphQLSubscriptionBuilder :
+    BaseGraphQLQueryBuilder(queryType = GraphQLQueryType.SUBSCRIPTION)
+
+open class GraphQLMutationBuilder :
+    BaseGraphQLQueryBuilder(queryType = GraphQLQueryType.MUTATION)
+
+open class GraphQLQueryBuilder :
+    BaseGraphQLQueryBuilder(queryType = GraphQLQueryType.QUERY)

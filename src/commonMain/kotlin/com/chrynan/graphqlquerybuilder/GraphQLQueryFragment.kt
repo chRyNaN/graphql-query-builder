@@ -1,3 +1,3 @@
 package com.chrynan.graphqlquerybuilder
 
-data class GraphQLQueryFragment<B : GraphQLQueryBuilder>(val builder: B.() -> Unit)
+data class GraphQLQueryFragment<B : BaseGraphQLQueryBuilder>(val builder: B.() -> Unit)

@@ -1,6 +1,6 @@
 package com.chrynan.graphqlquerybuilder
 
-data class ObjectGraphQLQueryFieldBuilder<B : GraphQLQueryBuilder>(
+data class ObjectGraphQLQueryFieldBuilder<B : BaseGraphQLQueryBuilder>(
     val name: String,
     val parameters: List<GraphQLParameter> = emptyList(),
     val objectBuilder: B,
