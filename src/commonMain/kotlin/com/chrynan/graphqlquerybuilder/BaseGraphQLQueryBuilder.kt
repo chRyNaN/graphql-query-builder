@@ -24,20 +24,20 @@ sealed class BaseGraphQLQueryBuilder(
 
     private val sb = StringBuilder()
 
-    fun param(name: String, defaultValue: Any? = null, value: Any? = null) =
+    fun gqlParam(name: String, defaultValue: Any? = null, value: Any? = null) =
         GraphQLParameter(
             name = name,
             defaultValue = defaultValue,
             value = value
         )
 
-    fun scalarWithParameters(name: String, parameters: List<GraphQLParameter>) {
+    fun gqlScalarWithParams(name: String, parameters: List<GraphQLParameter>) {
         val fieldBuilder = ScalarGraphQLQueryFieldBuilder(name = name, parameters = parameters)
         fieldNames.add(name)
         sb.append(fieldBuilder.build())
     }
 
-    fun <B : BaseGraphQLQueryBuilder> obj(
+    fun <B : BaseGraphQLQueryBuilder> gqlObject(
         name: String,
         parameters: List<GraphQLParameter> = emptyList(),
         objectBuilder: B,
@@ -56,7 +56,7 @@ sealed class BaseGraphQLQueryBuilder(
     internal fun build() = sb.toString()
 
     @Suppress("ClassName")
-    inner class scalar(val name: String) : ReadOnlyProperty<BaseGraphQLQueryBuilder, Unit> {
+    inner class gqlScalar(val name: String) : ReadOnlyProperty<BaseGraphQLQueryBuilder, Unit> {
 
         override fun getValue(thisRef: BaseGraphQLQueryBuilder, property: KProperty<*>) {
             val fieldBuilder = ScalarGraphQLQueryFieldBuilder(name = name)

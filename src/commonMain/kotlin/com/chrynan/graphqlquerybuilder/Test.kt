@@ -27,9 +27,9 @@ fun test(builder: AvatarGraphQLQueryBuilder) {
 
 class TestRoot : RootGraphQLQueryBuilder() {
 
-    val id = scalar(name = "id")
+    val id = gqlScalar(name = "id")
 
-    fun viewer(builder: UserGraphQLQueryBuilder.() -> Unit) = obj(
+    fun viewer(builder: UserGraphQLQueryBuilder.() -> Unit) = gqlObject(
         name = "viewer",
         objectBuilder = UserGraphQLQueryBuilder(),
         objectFieldBuilder = builder
@@ -38,19 +38,19 @@ class TestRoot : RootGraphQLQueryBuilder() {
 
 class UserGraphQLQueryBuilder : GraphQLQueryBuilder() {
 
-    val id by scalar(name = "id")
+    val id by gqlScalar(name = "id")
 
-    val description by scalar(name = "description")
+    val description by gqlScalar(name = "description")
 
-    val email by scalar(name = "email")
+    val email by gqlScalar(name = "email")
 
-    fun name(type: String) = scalarWithParameters(
+    fun name(type: String) = gqlScalarWithParams(
         name = "name",
-        parameters = listOf(param(name = "type", value = type))
+        parameters = listOf(gqlParam(name = "type", value = type))
     )
 
     fun avatar(builder: AvatarGraphQLQueryBuilder.() -> Unit) =
-        obj(
+        gqlObject(
             name = "avatar",
             objectBuilder = AvatarGraphQLQueryBuilder(),
             objectFieldBuilder = builder
@@ -59,11 +59,11 @@ class UserGraphQLQueryBuilder : GraphQLQueryBuilder() {
 
 class AvatarGraphQLQueryBuilder : GraphQLQueryBuilder() {
 
-    val default by scalar(name = "default")
+    val default by gqlScalar(name = "default")
 
-    val extraAttr = scalar(name = "extraAttr")
+    val extraAttr = gqlScalar(name = "extraAttr")
 
-    val height = scalar(name = "height")
+    val height = gqlScalar(name = "height")
 
-    val width = scalar(name = "width")
+    val width = gqlScalar(name = "width")
 }

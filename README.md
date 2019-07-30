@@ -23,27 +23,27 @@ typealias Cursor = String
 
 class AccountBuilder : GraphQLQueryBuilder() {
 
-  val id by scalar("id")
+  val id by gqlScalar("id")
   
-  val email by scalar("email")
+  val email by gqlScalar("email")
   
-  val token by scalar("token")
+  val token by gqlScalar("token")
 }
 
 class UserBuilder : GraphQLQueryBuilder() {
 
-  val id by scalar("id")
+  val id by gqlScalar("id")
   
-  val name by scalar("name")
+  val name by gqlScalar("name")
   
-  fun friends(count: Int, cursor: Cursor? = null) = scalarWithParameters(name = "friends", parameters = listOf(param(name = "count", value = count), param(name = "cursor", value = cursor)))
+  fun friends(count: Int, cursor: Cursor? = null) = gqlScalarWithParams(name = "friends", parameters = listOf(gqlParam(name = "count", value = count), gqlParam(name = "cursor", value = cursor)))
   
-  fun account(builder: AccountBuilder.() -> Unit) = obj(name = "account", objectBuilder = AccountBuilder(), objectFieldBuilder = builder)
+  fun account(builder: AccountBuilder.() -> Unit) = gqlObject(name = "account", objectBuilder = AccountBuilder(), objectFieldBuilder = builder)
 }
 
 class Root : RootGraphQLQueryBuilder() {
 
-  fun viewer(builder: UserBuilder.() -> Unit) = obj(name = "viewer", objectBuilder = UserBuilder(), objectFieldBuilder = builder)
+  fun viewer(builder: UserBuilder.() -> Unit) = gqlObject(name = "viewer", objectBuilder = UserBuilder(), objectFieldBuilder = builder)
 }
 ```
 
