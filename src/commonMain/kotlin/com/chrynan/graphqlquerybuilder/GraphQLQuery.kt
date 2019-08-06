@@ -1,8 +1,8 @@
 package com.chrynan.graphqlquerybuilder
 
 data class GraphQLQuery<Q>(
-    val builder: Q,
-    val query: Q.() -> Unit
+        val builder: Q,
+        val query: Q.() -> Unit
 ) where Q : BaseRootGraphQLQueryBuilder,
         Q : BaseGraphQLQueryBuilder {
 
@@ -10,5 +10,12 @@ data class GraphQLQuery<Q>(
         query.invoke(builder)
 
         return builder.build()
+    }
+
+    fun toDecodedString(): String = toGraphQLQueryString()
+
+    fun toEncodedString(): String {
+        // TODO
+        return toGraphQLQueryString()
     }
 }
