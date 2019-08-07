@@ -59,6 +59,11 @@ kotlin {
                 implementation 'org.jetbrains.kotlin:kotlin-stdlib-js'
             }
         }
+        jsTest {
+            dependencies {
+                implementation 'org.jetbrains.kotlin:kotlin-test-js'
+            }
+        }
     }
 }
 
