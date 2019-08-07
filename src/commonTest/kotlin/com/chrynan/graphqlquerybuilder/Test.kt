@@ -1,6 +1,6 @@
 package com.chrynan.graphqlquerybuilder
 
-inline fun <reified Q : TestRoot> query(noinline query: TestRoot.() -> Unit) =
+fun query(query: TestRoot.() -> Unit) =
     query(builder = TestRoot(), query = query)
 
 fun test(builder: AvatarGraphQLQueryBuilder) {
@@ -11,7 +11,7 @@ fun test(builder: AvatarGraphQLQueryBuilder) {
         height
     }
 
-    query<TestRoot> {
+    query {
         id
 
         viewer {
@@ -27,7 +27,7 @@ fun test(builder: AvatarGraphQLQueryBuilder) {
 
 class TestRoot : RootGraphQLQueryBuilder() {
 
-    val id = gqlScalar(name = "id")
+    val id by gqlScalar(name = "id")
 
     fun viewer(builder: UserGraphQLQueryBuilder.() -> Unit) = gqlObject(
         name = "viewer",
@@ -61,9 +61,9 @@ class AvatarGraphQLQueryBuilder : GraphQLQueryBuilder() {
 
     val default by gqlScalar(name = "default")
 
-    val extraAttr = gqlScalar(name = "extraAttr")
+    val extraAttr by gqlScalar(name = "extraAttr")
 
-    val height = gqlScalar(name = "height")
+    val height by gqlScalar(name = "height")
 
-    val width = gqlScalar(name = "width")
+    val width by gqlScalar(name = "width")
 }

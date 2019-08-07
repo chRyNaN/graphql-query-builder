@@ -12,6 +12,12 @@ open class RootGraphQLQueryBuilder : GraphQLQueryBuilder(),
 
     override val isRoot: Boolean
         get() = true
+
+    override fun build() = buildString {
+        append("{\n")
+        append(super.build())
+        append("}")
+    }
 }
 
 open class RootGraphQLMutationBuilder : GraphQLMutationBuilder(),

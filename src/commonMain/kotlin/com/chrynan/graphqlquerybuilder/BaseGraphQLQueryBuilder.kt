@@ -22,22 +22,25 @@ sealed class BaseGraphQLQueryBuilder(
 
     val fieldNames = mutableSetOf<String>()
 
+    internal var indentLevel = 1
+
     private val sb = StringBuilder()
 
-    fun gqlParam(name: String, defaultValue: Any? = null, value: Any? = null) =
+    protected fun gqlParam(name: String, defaultValue: Any? = null, value: Any? = null) =
         GraphQLParameter(
             name = name,
             defaultValue = defaultValue,
             value = value
         )
 
-    fun gqlScalarWithParams(name: String, parameters: List<GraphQLParameter>) {
+    protected fun gqlScalarWithParams(name: String, parameters: List<GraphQLParameter>) {
         val fieldBuilder = ScalarGraphQLQueryFieldBuilder(name = name, parameters = parameters)
         fieldNames.add(name)
+        addIndents()
         sb.append(fieldBuilder.build())
     }
 
-    fun <B : BaseGraphQLQueryBuilder> gqlObject(
+    protected fun <B : BaseGraphQLQueryBuilder> gqlObject(
         name: String,
         parameters: List<GraphQLParameter> = emptyList(),
         objectBuilder: B,
@@ -47,13 +50,21 @@ sealed class BaseGraphQLQueryBuilder(
             name = name,
             parameters = parameters,
             objectBuilder = objectBuilder,
-            objectFieldBuilder = objectFieldBuilder
+            objectFieldBuilder = objectFieldBuilder,
+            indentLevel = indentLevel
         )
         fieldNames.add(name)
+        addIndents()
         sb.append(fieldBuilder.build())
     }
 
-    internal fun build() = sb.toString()
+    internal open fun build() = sb.toString()
+
+    private fun addIndents() {
+        for (i in 0 until indentLevel) {
+            sb.append("    ")
+        }
+    }
 
     @Suppress("ClassName")
     inner class gqlScalar(val name: String) : ReadOnlyProperty<BaseGraphQLQueryBuilder, Unit> {
@@ -61,6 +72,7 @@ sealed class BaseGraphQLQueryBuilder(
         override fun getValue(thisRef: BaseGraphQLQueryBuilder, property: KProperty<*>) {
             val fieldBuilder = ScalarGraphQLQueryFieldBuilder(name = name)
             fieldNames.add(name)
+            addIndents()
             sb.append(fieldBuilder.build())
         }
     }

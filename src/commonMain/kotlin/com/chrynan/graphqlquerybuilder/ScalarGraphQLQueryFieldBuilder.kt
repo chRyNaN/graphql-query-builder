@@ -11,5 +11,7 @@ data class ScalarGraphQLQueryFieldBuilder(
         for (parameter in parameters) {
             append("${parameter.name} = ${parameter.value}")
         }
+
+        append("\n")
     }
 }

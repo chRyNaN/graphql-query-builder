@@ -4,7 +4,8 @@ data class ObjectGraphQLQueryFieldBuilder<B : BaseGraphQLQueryBuilder>(
     val name: String,
     val parameters: List<GraphQLParameter> = emptyList(),
     val objectBuilder: B,
-    val objectFieldBuilder: (B.() -> Unit)
+    val objectFieldBuilder: (B.() -> Unit),
+    val indentLevel: Int = 1
 ) {
 
     internal fun build(): String = buildString {
@@ -14,11 +15,13 @@ data class ObjectGraphQLQueryFieldBuilder<B : BaseGraphQLQueryBuilder>(
             append("${parameter.name} = ${parameter.value}")
         }
 
-        append(" ")
-
-        append("{")
+        append(" {\n")
+        objectBuilder.indentLevel = indentLevel + 1
         objectFieldBuilder.invoke(objectBuilder)
         append(objectBuilder.build())
-        append("}")
+        for (i in 0 until indentLevel) {
+            append("    ")
+        }
+        append("}\n")
     }
 }
