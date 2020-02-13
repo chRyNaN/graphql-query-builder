@@ -2,6 +2,8 @@
 
 A Mutliplatform Kotlin Library to facilitate the creation of type-safe GraphQL Request Query DSLs.
 
+**Note:** This is an older library experiment that is no longer being maintained. Please refer to the newer library: [graphkl](https://github.com/chRyNaN/graphkl).
+
 ## Library Objective
 
 This library helps create GraphQL request strings to send to a server. It does this by providing DSL Builder Classes which wrap a `StringBuilder` and handle building a dynamic GraphQL request string in proper format. These DSL Builder Classes can be extended from custom classes to create a simple DSL for request queries.
